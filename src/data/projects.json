@@ -1,0 +1,130 @@
+[
+  {
+    "slug": "usecognia",
+    "title": "UseCognia",
+    "summary": "SaaS para profissionais de saúde com agenda, prontuário e cobrança.",
+    "stack": [
+      "NestJS",
+      "React",
+      "PostgreSQL",
+      "TypeScript"
+    ],
+    "repoUrl": null,
+    "demoUrl": "https://usecognia.vercel.app",
+    "featured": true
+  },
+  {
+    "slug": "farmaapp",
+    "title": "FarmaApp",
+    "summary": "PWA para farmacêuticos com consulta de medicamentos offline e busca com IA Gemini por função serverless.",
+    "stack": [
+      "React",
+      "Node.js"
+    ],
+    "repoUrl": "https://github.com/GilsonCataoDev/Pharma-helper",
+    "demoUrl": "https://pharma-plum-chi.vercel.app",
+    "featured": true
+  },
+  {
+    "slug": "kurio",
+    "title": "Kurio",
+    "summary": "Marketplace de NFTs com catálogo, carrinho, recursos em tempo real, MSW e testes E2E.",
+    "stack": [
+      "React 19",
+      "TypeScript",
+      "TanStack",
+      "Tailwind",
+      "Playwright"
+    ],
+    "repoUrl": "https://github.com/GilsonCataoDev/Task-jungle-gaming",
+    "demoUrl": "https://task-jungle-gaming.vercel.app",
+    "featured": true
+  },
+  {
+    "slug": "winhelpdesk-toolkit",
+    "title": "WinHelpDesk Toolkit",
+    "summary": "Scripts para suporte N1/N2 no Windows, cobrindo rede, reparo, spooler, limpeza e diagnóstico.",
+    "stack": [
+      "Batch",
+      "PowerShell"
+    ],
+    "repoUrl": "https://github.com/GilsonCataoDev/WinHelpDesk-Toolkit",
+    "demoUrl": null,
+    "featured": true
+  },
+  {
+    "slug": "jobhunter-br",
+    "title": "jobhunter-br",
+    "summary": "Robô de busca de vagas na Gupy e no InfoJobs com aprovação por Telegram antes da candidatura.",
+    "stack": [
+      "Python"
+    ],
+    "repoUrl": "https://github.com/GilsonCataoDev/jobhunter-br",
+    "demoUrl": null,
+    "featured": true
+  },
+  {
+    "slug": "bot-download-video",
+    "title": "bot-download-video",
+    "summary": "Automatiza uma extensão de download de vídeo em playlists e páginas de curso, com CI.",
+    "stack": [
+      "Node.js",
+      "Playwright"
+    ],
+    "repoUrl": "https://github.com/GilsonCataoDev/bot-download-video",
+    "demoUrl": null,
+    "featured": true
+  },
+  {
+    "slug": "clinvag",
+    "title": "Clinvag",
+    "summary": "Landing page de uma clínica de vacinação.",
+    "stack": [
+      "React",
+      "Vite",
+      "CSS Modules"
+    ],
+    "repoUrl": "https://github.com/GilsonCataoDev/Clinvag",
+    "demoUrl": "https://clinvag.netlify.app",
+    "featured": false
+  },
+  {
+    "slug": "kanban-de-suporte",
+    "title": "Kanban de Suporte",
+    "summary": "Quadro de tickets organizado por etapa.",
+    "stack": [
+      "React",
+      "TypeScript",
+      "Vite"
+    ],
+    "repoUrl": "https://github.com/GilsonCataoDev/kaban-suporte",
+    "demoUrl": null,
+    "featured": false
+  },
+  {
+    "slug": "agenda-medica",
+    "title": "Agenda Médica",
+    "summary": "Agenda diária para clínica com filtros.",
+    "stack": [
+      "React",
+      "TypeScript",
+      "Vite"
+    ],
+    "repoUrl": "https://github.com/GilsonCataoDev/agenda-medica",
+    "demoUrl": null,
+    "featured": false
+  },
+  {
+    "slug": "financeiro-saas",
+    "title": "Financeiro SaaS",
+    "summary": "Dashboard de receita, faturas e MRR.",
+    "stack": [
+      "React",
+      "TypeScript",
+      "Vite"
+    ],
+    "repoUrl": "https://github.com/GilsonCataoDev/financeiro-saas",
+    "demoUrl": null,
+    "featured": false
+  }
+]
