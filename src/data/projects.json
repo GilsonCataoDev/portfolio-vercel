@@ -6,7 +6,9 @@
     "summary": "SaaS para psicólogos, fisioterapeutas e nutricionistas: agenda, prontuário eletrônico, financeiro e agendamento online. Inclui escalas e instrumentos clínicos com pontuação automática.",
     "stack": ["NestJS", "React", "PostgreSQL", "TypeScript"],
     "repoUrl": null,
-    "demoUrl": "https://usecognia.com.br"
+    "demoUrl": "https://usecognia.com.br",
+    "shot": "/shots/usecognia.jpg",
+    "shotH": 530
   },
   {
     "slug": "inkhub",
@@ -33,7 +35,9 @@
     "summary": "Marketplace de NFTs feito para um desafio de front-end: catálogo, carrinho, favoritos e atualizações em tempo real. A API é simulada com MSW e o projeto tem testes E2E e documento de arquitetura.",
     "stack": ["React 19", "TypeScript", "TanStack", "Tailwind", "MSW", "Playwright"],
     "repoUrl": "https://github.com/GilsonCataoDev/Task-jungle-gaming",
-    "demoUrl": "https://task-jungle-gaming.vercel.app"
+    "demoUrl": "https://task-jungle-gaming.vercel.app",
+    "shot": "/shots/kurio.jpg",
+    "shotH": 480
   },
   {
     "slug": "farmaapp",

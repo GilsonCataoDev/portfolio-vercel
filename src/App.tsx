@@ -24,6 +24,8 @@ type Project = {
   stack: string[];
   repoUrl: string | null;
   demoUrl: string | null;
+  shot?: string;
+  shotH?: number;
 };
 
 const projects = projectsData as Project[];
@@ -219,9 +221,21 @@ function Poster({ p, Icon }: { p: Project; Icon: LucideIcon }) {
       <p className="text-center font-display text-sm uppercase tracking-[0.3em] text-red" aria-hidden>
         Procurado
       </p>
-      <div className="portrait mx-auto my-3" aria-hidden>
-        <Icon size={28} strokeWidth={2.2} />
-      </div>
+      {p.shot ? (
+        <img
+          src={p.shot}
+          alt={`Captura da página inicial de ${p.title}`}
+          width={1280}
+          height={p.shotH ?? 530}
+          loading="lazy"
+          className="my-3 w-full border-[3px] border-ink object-cover object-top"
+          style={{ aspectRatio: `1280 / ${p.shotH ?? 530}` }}
+        />
+      ) : (
+        <div className="portrait mx-auto my-3" aria-hidden>
+          <Icon size={28} strokeWidth={2.2} />
+        </div>
+      )}
       <h4 className="text-center font-display text-3xl leading-tight">{p.title}</h4>
       <p className="mt-3 flex-1 text-[0.98rem] leading-snug">{p.summary}</p>
       <p className="mt-4 border-t-2 border-dashed border-ink/40 pt-3 font-mono text-xs leading-relaxed text-muted">
