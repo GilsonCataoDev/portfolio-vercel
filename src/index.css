@@ -1,13 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f7f5f0;
-  --color-ink: #17181c;
-  --color-muted: #55596a;
-  --color-rule: #dcd8cc;
-  --color-accent: #1c3fb0;
-  --font-serif: "Newsreader", Georgia, serif;
-  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --color-paper: #f3e7c9;
+  --color-poster: #ecd9a8;
+  --color-ink: #2b1d12;
+  --color-muted: #66503a;
+  --color-sea: #1d4e6b;
+  --color-red: #b3261e;
+  --color-straw: #e8b630;
+  --font-display: "Pirata One", Georgia, serif;
+  --font-sans: "Alegreya Sans", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
@@ -16,35 +18,102 @@ html {
 }
 
 body {
-  background: var(--color-paper);
+  background-color: var(--color-paper);
+  /* retícula de pontos, como tela de mangá */
+  background-image: radial-gradient(rgba(43, 29, 18, 0.1) 1px, transparent 1.2px);
+  background-size: 7px 7px;
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-size: 1.075rem;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  line-height: 1.6;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 3px solid var(--color-red);
   outline-offset: 3px;
 }
 
 ::selection {
-  background: #d7defa;
+  background: var(--color-straw);
+}
+
+/* faixa nas cores do frevo */
+.frevo {
+  height: 10px;
+  border-block: 2px solid var(--color-ink);
+  background: repeating-linear-gradient(
+    90deg,
+    #d62839 0 26px,
+    #f4a300 26px 52px,
+    #1e8a6e 52px 78px,
+    #1d4e9f 78px 104px
+  );
+}
+
+/* painel de mangá */
+.panel {
+  border: 3px solid var(--color-ink);
+  background: var(--color-paper);
+  box-shadow: 6px 6px 0 var(--color-ink);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 3px solid var(--color-ink);
+  padding: 0.55rem 1.1rem;
+  font-weight: 700;
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+.btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--color-ink);
 }
 
 .link {
-  color: var(--color-ink);
+  font-weight: 700;
+  color: var(--color-sea);
   text-decoration: underline;
-  text-decoration-color: var(--color-rule);
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
-  transition:
-    color 0.15s ease,
-    text-decoration-color 0.15s ease;
 }
 .link:hover {
-  color: var(--color-accent);
-  text-decoration-color: var(--color-accent);
+  color: var(--color-red);
+}
+
+/* cartaz de procurado */
+.poster {
+  position: relative;
+  border: 3px solid var(--color-ink);
+  background: var(--color-poster);
+  box-shadow:
+    inset 0 0 0 5px var(--color-poster),
+    inset 0 0 0 7px var(--color-ink),
+    5px 5px 0 var(--color-ink);
+  transition: transform 0.18s ease;
+}
+.poster:nth-child(odd) {
+  transform: rotate(-0.6deg);
+}
+.poster:nth-child(even) {
+  transform: rotate(0.6deg);
+}
+.poster:hover {
+  transform: rotate(0deg) translateY(-3px);
+}
+
+.sail {
+  animation: bob 5s ease-in-out infinite;
+}
+@keyframes bob {
+  50% {
+    transform: translateY(-5px) rotate(-1.5deg);
+  }
 }
 
 .fade-in {
@@ -53,7 +122,7 @@ body {
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -65,10 +134,16 @@ body {
   html {
     scroll-behavior: auto;
   }
+  .sail,
   .fade-in {
     animation: none;
   }
-  * {
-    transition-duration: 0.01ms !important;
+  .poster,
+  .poster:nth-child(odd),
+  .poster:nth-child(even),
+  .poster:hover,
+  .btn,
+  .btn:hover {
+    transition: none;
   }
 }

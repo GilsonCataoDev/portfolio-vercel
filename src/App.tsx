@@ -1,6 +1,5 @@
-import { useEffect, useState, type ReactNode } from "react";
-import { ArrowUpRight, Github, Linkedin } from "lucide-react";
-import clsx from "clsx";
+import type { ReactNode } from "react";
+import { ArrowUpRight, Bot, Compass, Github, Globe, Linkedin, Wrench, type LucideIcon } from "lucide-react";
 import projectsData from "./data/projects.json";
 
 type Category = "web" | "automation" | "support";
@@ -20,21 +19,27 @@ const projects = projectsData as Project[];
 const GITHUB = "https://github.com/GilsonCataoDev";
 const LINKEDIN = "https://www.linkedin.com/in/gilsondevjr";
 
-const groups: { id: Category; title: string; intro: string }[] = [
+const groups: { id: Category; island: string; title: string; intro: string; icon: LucideIcon }[] = [
   {
     id: "web",
+    island: "Ilha 1",
     title: "Aplicações web e mobile",
     intro: "Produtos com front-end, API e banco de dados, vários deles na área da saúde.",
+    icon: Globe,
   },
   {
     id: "automation",
+    island: "Ilha 2",
     title: "Automação, dados e IA",
     intro: "Rotinas que rodam sozinhas, pipelines de dados e agentes com LLM.",
+    icon: Bot,
   },
   {
     id: "support",
+    island: "Ilha 3",
     title: "Suporte técnico",
     intro: "Ferramentas para o dia a dia de um atendimento N1/N2.",
+    icon: Wrench,
   },
 ];
 
@@ -61,29 +66,25 @@ const nav = [
   ["contato", "Contato"],
 ] as const;
 
-function useActiveSection(ids: readonly string[]) {
-  const [active, setActive] = useState(ids[0]);
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) setActive(visible[0].target.id);
-      },
-      { rootMargin: "-20% 0px -60% 0px", threshold: [0, 0.25, 0.5, 1] },
-    );
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) io.observe(el);
-    });
-    return () => io.disconnect();
-  }, [ids]);
-  return active;
+/** Chapéu de palha desenhado à mão (ilustração própria). */
+function StrawHat({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 140 100" className={className} role="img" aria-label="Chapéu de palha">
+      <ellipse cx="70" cy="62" rx="64" ry="18" fill="#e8b630" stroke="#2b1d12" strokeWidth="4" />
+      <path d="M26 58 C24 14 116 14 114 58 C94 70 46 70 26 58 Z" fill="#f2c94c" stroke="#2b1d12" strokeWidth="4" strokeLinejoin="round" />
+      <path d="M27 50 C48 62 92 62 113 50 L114 58 C94 70 46 70 26 58 Z" fill="#b3261e" stroke="#2b1d12" strokeWidth="4" strokeLinejoin="round" />
+      <path d="M52 22 C60 17 80 17 88 22" fill="none" stroke="#fff6d6" strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  );
 }
 
-function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
+function Chapter({ n, title, id, children }: { n: number; title: string; id: string; children: ReactNode }) {
   return (
-    <section id={id} aria-labelledby={`${id}-t`} className="scroll-mt-12 py-10 first:pt-0 lg:scroll-mt-0">
-      <h2 id={`${id}-t`} className="mb-6 font-mono text-xs font-medium uppercase tracking-[0.18em] text-muted">
+    <section id={id} aria-labelledby={`${id}-t`} className="scroll-mt-24 py-10">
+      <p className="mb-1 font-mono text-xs font-medium uppercase tracking-[0.2em] text-red" aria-hidden>
+        Capítulo {n}
+      </p>
+      <h2 id={`${id}-t`} className="mb-6 font-display text-4xl md:text-5xl">
         {title}
       </h2>
       {children}
@@ -95,42 +96,46 @@ function ExtLink({ href, children }: { href: string; children: ReactNode }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className="link inline-flex items-center gap-1">
       {children}
-      <ArrowUpRight size={14} aria-hidden />
+      <ArrowUpRight size={15} aria-hidden />
     </a>
   );
 }
 
-function ProjectRow({ p }: { p: Project }) {
+function Poster({ p, Icon }: { p: Project; Icon: LucideIcon }) {
   return (
-    <article className="border-t border-rule py-6 first:border-t-0 first:pt-0">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h4 className="font-serif text-xl font-semibold leading-snug">{p.title}</h4>
-        <p className="flex flex-wrap gap-x-4 text-sm">
-          {p.demoUrl && (
-            <ExtLink href={p.demoUrl}>
-              Site<span className="sr-only"> de {p.title}</span>
-            </ExtLink>
-          )}
-          {p.repoUrl ? (
-            <ExtLink href={p.repoUrl}>
-              Código<span className="sr-only"> de {p.title}</span>
-            </ExtLink>
-          ) : (
-            <span className="text-muted">Código privado</span>
-          )}
-        </p>
+    <article className="poster flex flex-col p-5">
+      <p className="text-center font-display text-sm uppercase tracking-[0.3em] text-red" aria-hidden>
+        Procurado
+      </p>
+      <div className="mx-auto my-3 flex h-14 w-14 items-center justify-center rounded-full border-[3px] border-ink bg-straw" aria-hidden>
+        <Icon size={26} strokeWidth={2.2} />
       </div>
-      <p className="mt-2 max-w-[62ch] text-[0.95rem] text-muted">{p.summary}</p>
-      <p className="mt-3 font-mono text-xs text-ink/80">{p.stack.join("  ·  ")}</p>
+      <h4 className="text-center font-display text-3xl leading-tight">{p.title}</h4>
+      <p className="mt-3 flex-1 text-[0.98rem] leading-snug">{p.summary}</p>
+      <p className="mt-4 border-t-2 border-dashed border-ink/40 pt-3 font-mono text-xs leading-relaxed text-muted">
+        <span className="font-semibold text-ink">Tripulação:</span> {p.stack.join(" · ")}
+      </p>
+      <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+        {p.demoUrl && (
+          <ExtLink href={p.demoUrl}>
+            Site<span className="sr-only"> de {p.title}</span>
+          </ExtLink>
+        )}
+        {p.repoUrl ? (
+          <ExtLink href={p.repoUrl}>
+            Código<span className="sr-only"> de {p.title}</span>
+          </ExtLink>
+        ) : (
+          <span className="text-muted">Código privado</span>
+        )}
+      </p>
     </article>
   );
 }
 
 export default function App() {
-  const active = useActiveSection(nav.map(([id]) => id));
-
   return (
-    <div className="mx-auto max-w-6xl px-6 md:px-10 lg:flex lg:gap-20">
+    <>
       <a
         href="#projetos"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-3 focus:py-2 focus:text-paper"
@@ -138,119 +143,124 @@ export default function App() {
         Ir para os projetos
       </a>
 
-      <header className="fade-in pt-16 lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[22rem] lg:shrink-0 lg:flex-col lg:justify-between lg:py-20">
-        <div>
-          <h1 className="font-serif text-5xl font-semibold leading-[1.02] tracking-tight md:text-6xl">Gilson Pereira</h1>
-          <p className="mt-3 text-lg">Desenvolvedor em formação</p>
-          <p className="mt-4 max-w-xs text-muted">
-            Front-end, back-end e automação. Busco estágio ou vaga júnior.
-          </p>
-          <p className="mt-4 font-mono text-xs text-muted">Pernambuco, Brasil</p>
-
-          <nav aria-label="Seções" className="mt-12 hidden lg:block">
-            <ul className="space-y-3 font-mono text-xs uppercase tracking-[0.14em]">
-              {nav.map(([id, label]) => (
-                <li key={id}>
-                  <a
-                    href={`#${id}`}
-                    aria-current={active === id ? "true" : undefined}
-                    className={clsx(
-                      "inline-flex items-center gap-3 transition-colors hover:text-accent",
-                      active === id ? "text-ink" : "text-muted",
-                    )}
-                  >
-                    <span
-                      aria-hidden
-                      className={clsx("h-px bg-current transition-all", active === id ? "w-12" : "w-6")}
-                    />
-                    {label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-
-        <ul className="mt-8 flex gap-5 lg:mt-0">
-          <li>
-            <a href={GITHUB} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-muted transition-colors hover:text-accent">
-              <Github size={22} aria-hidden />
-            </a>
-          </li>
-          <li>
-            <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-muted transition-colors hover:text-accent">
-              <Linkedin size={22} aria-hidden />
-            </a>
-          </li>
-        </ul>
+      <header className="sticky top-0 z-40 bg-paper">
+        <nav aria-label="Principal" className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 md:px-8">
+          <a href="#inicio" className="flex items-center gap-2 font-display text-2xl">
+            <Compass size={22} aria-hidden /> GP
+          </a>
+          <ul className="flex flex-wrap justify-end gap-x-5 gap-y-1 text-sm font-bold md:gap-x-7 md:text-base">
+            {nav.map(([id, label]) => (
+              <li key={id}>
+                <a className="underline-offset-4 hover:text-red hover:underline" href={`#${id}`}>
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="frevo" aria-hidden />
       </header>
 
-      <main className="fade-in pb-24 pt-12 lg:w-full lg:py-20">
-        <Section id="sobre" title="Sobre">
-          <div className="max-w-[62ch] space-y-4">
+      <main className="mx-auto max-w-6xl px-5 pb-16 md:px-8">
+        <section id="inicio" className="fade-in py-10 md:py-16">
+          <div className="panel grid items-center gap-6 p-6 md:grid-cols-[1fr_auto] md:gap-10 md:p-12">
+            <div>
+              <p className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-red">Pernambuco, Brasil</p>
+              <h1 className="mt-2 font-display text-6xl leading-[0.95] md:text-8xl">Gilson Pereira</h1>
+              <p className="mt-3 text-xl font-bold">Desenvolvedor em formação</p>
+              <p className="mt-3 max-w-[48ch] text-lg">
+                Zarpando de Pernambuco rumo à primeira vaga em TI. Front-end, back-end e automação, com estágio ou
+                vaga júnior como próximo destino.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <a href="#projetos" className="btn bg-red text-paper">
+                  Ver projetos <ArrowUpRight size={18} aria-hidden />
+                </a>
+                <a href={GITHUB} target="_blank" rel="noopener noreferrer" className="btn bg-paper">
+                  <Github size={18} aria-hidden /> GitHub
+                </a>
+                <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="btn bg-paper">
+                  <Linkedin size={18} aria-hidden /> LinkedIn
+                </a>
+              </div>
+            </div>
+            <StrawHat className="sail mx-auto w-44 md:w-64" />
+          </div>
+        </section>
+
+        <Chapter n={1} id="sobre" title="Sobre">
+          <div className="max-w-[64ch] space-y-4">
             <p>
               Sou farmacêutico em transição para tecnologia e graduando em Análise e Desenvolvimento de Sistemas.
               Desenvolvo aplicações web com React, TypeScript e NestJS e automações em Python e Node.js.
             </p>
             <p>
               A experiência em saúde aparece nos projetos: prontuário e agenda clínica, consulta de medicamentos para
-              farmácia e sites para profissionais da área. Conheço o problema de quem usa o sistema, e isso orienta
-              as decisões de produto.
+              farmácia e sites para profissionais da área. Conheço o problema de quem usa o sistema, e isso orienta as
+              decisões de produto.
             </p>
-            <p className="text-muted">
+            <p>
               Uso ferramentas de IA como apoio de estudo e implementação. Antes de apresentar um projeto, valido o
               comportamento, os testes e as limitações.
             </p>
+            <p className="text-muted">
+              Sou de Pernambuco e fã de anime, principalmente de One Piece, que inspirou o visual deste site.
+            </p>
           </div>
-        </Section>
+        </Chapter>
 
-        <Section id="projetos" title="Projetos">
-          <div className="space-y-12">
+        <Chapter n={2} id="projetos" title="Projetos">
+          <div className="space-y-14">
             {groups.map((g) => (
               <div key={g.id}>
-                <h3 className="font-serif text-2xl font-semibold">{g.title}</h3>
-                <p className="mb-6 mt-1 text-sm text-muted">{g.intro}</p>
-                {projects
-                  .filter((p) => p.category === g.id)
-                  .map((p) => (
-                    <ProjectRow key={p.slug} p={p} />
-                  ))}
+                <h3 className="font-display text-2xl md:text-3xl">
+                  <span className="mr-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-red">{g.island}</span>
+                  {g.title}
+                </h3>
+                <p className="mb-6 mt-1 text-muted">{g.intro}</p>
+                <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+                  {projects
+                    .filter((p) => p.category === g.id)
+                    .map((p) => (
+                      <Poster key={p.slug} p={p} Icon={g.icon} />
+                    ))}
+                </div>
               </div>
             ))}
           </div>
-          <p className="mt-10 text-sm text-muted">
+          <p className="mt-12 max-w-[64ch] text-muted">
             Alguns repositórios são privados e posso mostrá-los em conversa. Os demais projetos e estudos estão no{" "}
             <a className="link" href={GITHUB} target="_blank" rel="noopener noreferrer">
               meu GitHub
             </a>
             .
           </p>
-        </Section>
+        </Chapter>
 
-        <Section id="competencias" title="Competências">
-          <dl className="max-w-[62ch] divide-y divide-rule border-y border-rule">
+        <Chapter n={3} id="competencias" title="Competências">
+          <dl className="panel max-w-3xl divide-y-2 divide-ink/20 bg-poster">
             {skills.map(([k, v]) => (
-              <div key={k} className="grid gap-1 py-3 sm:grid-cols-[10rem_1fr] sm:gap-6">
-                <dt className="font-medium">{k}</dt>
-                <dd className="text-muted">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </Section>
-
-        <Section id="formacao" title="Formação">
-          <dl className="max-w-[62ch] divide-y divide-rule border-y border-rule">
-            {education.map(([k, v]) => (
-              <div key={v} className="grid gap-1 py-3 sm:grid-cols-[10rem_1fr] sm:gap-6">
-                <dt className="font-mono text-xs uppercase tracking-[0.12em] text-muted sm:pt-1">{k}</dt>
+              <div key={k} className="grid gap-1 px-5 py-3 sm:grid-cols-[11rem_1fr] sm:gap-6">
+                <dt className="font-bold">{k}</dt>
                 <dd>{v}</dd>
               </div>
             ))}
           </dl>
-        </Section>
+        </Chapter>
 
-        <Section id="contato" title="Contato">
-          <p className="max-w-[62ch]">
+        <Chapter n={4} id="formacao" title="Formação">
+          <dl className="panel max-w-3xl divide-y-2 divide-ink/20 bg-poster">
+            {education.map(([k, v]) => (
+              <div key={v} className="grid gap-1 px-5 py-3 sm:grid-cols-[11rem_1fr] sm:gap-6">
+                <dt className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-red sm:pt-1.5">{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </Chapter>
+
+        <Chapter n={5} id="contato" title="Contato">
+          <p className="max-w-[64ch]">
             Estou procurando estágio ou vaga júnior em front-end, suporte técnico ou desenvolvimento. O contato mais
             rápido é pelo{" "}
             <a className="link" href={LINKEDIN} target="_blank" rel="noopener noreferrer">
@@ -262,12 +272,15 @@ export default function App() {
             </a>
             .
           </p>
-        </Section>
-
-        <footer className="mt-10 border-t border-rule pt-6 font-mono text-xs text-muted">
-          Gilson Pereira · {new Date().getFullYear()}
-        </footer>
+        </Chapter>
       </main>
-    </div>
+
+      <footer>
+        <div className="frevo" aria-hidden />
+        <p className="py-6 text-center font-mono text-xs text-muted">
+          Gilson Pereira · feito em Pernambuco · {new Date().getFullYear()}
+        </p>
+      </footer>
+    </>
   );
 }
