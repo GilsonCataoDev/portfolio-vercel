@@ -1,272 +1,273 @@
-import { useEffect, type ReactNode } from "react";
-import { ArrowUpRight, Github, Linkedin, Lock, ExternalLink, Code2 } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
+import { ArrowUpRight, Github, Linkedin } from "lucide-react";
 import clsx from "clsx";
 import projectsData from "./data/projects.json";
 
+type Category = "web" | "automation" | "support";
+
 type Project = {
   slug: string;
+  category: Category;
   title: string;
   summary: string;
   stack: string[];
   repoUrl: string | null;
   demoUrl: string | null;
-  featured: boolean;
 };
 
 const projects = projectsData as Project[];
-const featured = projects.filter((p) => p.featured);
-const others = projects.filter((p) => !p.featured);
 
 const GITHUB = "https://github.com/GilsonCataoDev";
 const LINKEDIN = "https://www.linkedin.com/in/gilsondevjr";
 
-// Padrão assimétrico do bento grid (colunas de 6 no desktop).
-const spans = ["lg:col-span-4", "lg:col-span-2", "lg:col-span-2", "lg:col-span-4", "lg:col-span-3", "lg:col-span-3"];
-
-const stack = [
-  { group: "Front-end", items: ["React", "TypeScript", "JavaScript", "HTML", "CSS", "Tailwind", "Vite"] },
-  { group: "Back-end e dados", items: ["Node.js", "NestJS", "PostgreSQL", "Prisma", "Python"] },
-  { group: "Ferramentas", items: ["Git", "GitHub", "Docker (básico)", "Playwright"] },
-  { group: "Suporte", items: ["Windows (troubleshooting)", "PowerShell", "Batch"] },
+const groups: { id: Category; title: string; intro: string }[] = [
+  {
+    id: "web",
+    title: "Aplicações web e mobile",
+    intro: "Produtos com front-end, API e banco de dados, vários deles na área da saúde.",
+  },
+  {
+    id: "automation",
+    title: "Automação, dados e IA",
+    intro: "Rotinas que rodam sozinhas, pipelines de dados e agentes com LLM.",
+  },
+  {
+    id: "support",
+    title: "Suporte técnico",
+    intro: "Ferramentas para o dia a dia de um atendimento N1/N2.",
+  },
 ];
 
-const principles = [
-  { t: "Aprendo construindo", d: "Cada projeto sai com documentação e testes, não só com código." },
-  { t: "IA como apoio, não como atalho", d: "Uso ferramentas de IA para estudar e implementar, mas valido comportamento, testes e limitações." },
-  { t: "Problemas concretos", d: "Prefiro projetos que respondem a uma pergunta real e dizem o que funcionou e o que não funcionou." },
+const skills: [string, string][] = [
+  ["Front-end", "React, TypeScript, JavaScript, HTML, CSS, Tailwind, Vite, Next.js"],
+  ["Back-end e dados", "Node.js, NestJS, PostgreSQL, Prisma, Python"],
+  ["Automação e IA", "GitHub Actions, Playwright, integração com APIs de LLM, RAG"],
+  ["Ferramentas", "Git, GitHub, Docker (básico), Vercel"],
+  ["Suporte", "Windows (troubleshooting), PowerShell, Batch"],
 ];
 
-function useReveal() {
+const education: [string, string][] = [
+  ["Em andamento", "Análise e Desenvolvimento de Sistemas (graduação)"],
+  ["Em andamento", "Suporte de TI, Google"],
+  ["Concluído", "Curso de cibersegurança, Cisco"],
+  ["Formação de origem", "Farmácia"],
+];
+
+const nav = [
+  ["sobre", "Sobre"],
+  ["projetos", "Projetos"],
+  ["competencias", "Competências"],
+  ["formacao", "Formação"],
+  ["contato", "Contato"],
+] as const;
+
+function useActiveSection(ids: readonly string[]) {
+  const [active, setActive] = useState(ids[0]);
   useEffect(() => {
-    const els = document.querySelectorAll(".reveal");
     const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("is-visible");
-            io.unobserve(e.target);
-          }
-        }),
-      { threshold: 0.12 },
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-20% 0px -60% 0px", threshold: [0, 0.25, 0.5, 1] },
     );
-    els.forEach((el) => io.observe(el));
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
     return () => io.disconnect();
-  }, []);
+  }, [ids]);
+  return active;
 }
 
 function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
-    <section id={id} aria-labelledby={`${id}-t`} className="mx-auto w-full max-w-6xl scroll-mt-24 px-5 py-20 md:px-8">
-      <h2 id={`${id}-t`} className="reveal font-display mb-10 text-3xl font-bold tracking-tight md:text-5xl">
+    <section id={id} aria-labelledby={`${id}-t`} className="scroll-mt-12 py-10 first:pt-0 lg:scroll-mt-0">
+      <h2 id={`${id}-t`} className="mb-6 font-mono text-xs font-medium uppercase tracking-[0.18em] text-muted">
         {title}
-        <span className="text-accent">.</span>
       </h2>
       {children}
     </section>
   );
 }
 
-function Tag({ children }: { children: ReactNode }) {
+function ExtLink({ href, children }: { href: string; children: ReactNode }) {
   return (
-    <li className="rounded-full border border-line px-3 py-1 text-xs text-muted transition-colors group-hover:border-accent/40">
+    <a href={href} target="_blank" rel="noopener noreferrer" className="link inline-flex items-center gap-1">
       {children}
-    </li>
-  );
-}
-
-function LinkPill({ href, children }: { href: string; children: ReactNode }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex items-center gap-1.5 text-sm font-medium text-white underline-offset-4 transition-colors hover:text-accent hover:underline"
-    >
-      {children}
+      <ArrowUpRight size={14} aria-hidden />
     </a>
   );
 }
 
-function ProjectCard({ p, className }: { p: Project; className?: string }) {
+function ProjectRow({ p }: { p: Project }) {
   return (
-    <article
-      className={clsx(
-        "reveal group flex flex-col justify-between rounded-3xl border border-line bg-panel p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 md:p-8",
-        className,
-      )}
-    >
-      <div>
-        <h3 className="font-display text-2xl font-bold tracking-tight md:text-3xl">{p.title}</h3>
-        <p className="mt-3 max-w-prose text-muted">{p.summary}</p>
-      </div>
-      <div className="mt-6">
-        <ul className="mb-5 flex flex-wrap gap-2" aria-label="Tecnologias">
-          {p.stack.map((s) => (
-            <Tag key={s}>{s}</Tag>
-          ))}
-        </ul>
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+    <article className="border-t border-rule py-6 first:border-t-0 first:pt-0">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <h4 className="font-serif text-xl font-semibold leading-snug">{p.title}</h4>
+        <p className="flex flex-wrap gap-x-4 text-sm">
           {p.demoUrl && (
-            <LinkPill href={p.demoUrl}>
-              <ExternalLink size={16} aria-hidden /> Demo <span className="sr-only">de {p.title}</span>
-            </LinkPill>
+            <ExtLink href={p.demoUrl}>
+              Site<span className="sr-only"> de {p.title}</span>
+            </ExtLink>
           )}
           {p.repoUrl ? (
-            <LinkPill href={p.repoUrl}>
-              <Code2 size={16} aria-hidden /> Código <span className="sr-only">de {p.title}</span>
-            </LinkPill>
+            <ExtLink href={p.repoUrl}>
+              Código<span className="sr-only"> de {p.title}</span>
+            </ExtLink>
           ) : (
-            <span className="inline-flex items-center gap-1.5 text-sm text-muted">
-              <Lock size={14} aria-hidden /> repositório privado
-            </span>
+            <span className="text-muted">Código privado</span>
           )}
-        </div>
+        </p>
       </div>
+      <p className="mt-2 max-w-[62ch] text-[0.95rem] text-muted">{p.summary}</p>
+      <p className="mt-3 font-mono text-xs text-ink/80">{p.stack.join("  ·  ")}</p>
     </article>
   );
 }
 
 export default function App() {
-  useReveal();
+  const active = useActiveSection(nav.map(([id]) => id));
 
   return (
-    <>
-      <a href="#projetos" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-accent focus:px-3 focus:py-2 focus:text-ink">
-        Ir para o conteúdo
+    <div className="mx-auto max-w-6xl px-6 md:px-10 lg:flex lg:gap-20">
+      <a
+        href="#projetos"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-3 focus:py-2 focus:text-paper"
+      >
+        Ir para os projetos
       </a>
-      <header className="sticky top-0 z-40 border-b border-line/60 bg-ink/80 backdrop-blur">
-        <nav aria-label="Principal" className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:px-8">
-          <a href="#inicio" className="font-display text-lg font-bold">
-            GP<span className="text-accent">.</span>
-          </a>
-          <ul className="flex gap-5 text-sm text-muted md:gap-8">
-            {[
-              ["Projetos", "#projetos"],
-              ["Stack", "#stack"],
-              ["Sobre", "#sobre"],
-              ["Contato", "#contato"],
-            ].map(([l, h]) => (
-              <li key={h}>
-                <a className="transition-colors hover:text-accent" href={h}>
-                  {l}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+
+      <header className="fade-in pt-16 lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[22rem] lg:shrink-0 lg:flex-col lg:justify-between lg:py-20">
+        <div>
+          <h1 className="font-serif text-5xl font-semibold leading-[1.02] tracking-tight md:text-6xl">Gilson Pereira</h1>
+          <p className="mt-3 text-lg">Desenvolvedor em formação</p>
+          <p className="mt-4 max-w-xs text-muted">
+            Front-end, back-end e automação. Busco estágio ou vaga júnior.
+          </p>
+          <p className="mt-4 font-mono text-xs text-muted">Pernambuco, Brasil</p>
+
+          <nav aria-label="Seções" className="mt-12 hidden lg:block">
+            <ul className="space-y-3 font-mono text-xs uppercase tracking-[0.14em]">
+              {nav.map(([id, label]) => (
+                <li key={id}>
+                  <a
+                    href={`#${id}`}
+                    aria-current={active === id ? "true" : undefined}
+                    className={clsx(
+                      "inline-flex items-center gap-3 transition-colors hover:text-accent",
+                      active === id ? "text-ink" : "text-muted",
+                    )}
+                  >
+                    <span
+                      aria-hidden
+                      className={clsx("h-px bg-current transition-all", active === id ? "w-12" : "w-6")}
+                    />
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+
+        <ul className="mt-8 flex gap-5 lg:mt-0">
+          <li>
+            <a href={GITHUB} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-muted transition-colors hover:text-accent">
+              <Github size={22} aria-hidden />
+            </a>
+          </li>
+          <li>
+            <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-muted transition-colors hover:text-accent">
+              <Linkedin size={22} aria-hidden />
+            </a>
+          </li>
+        </ul>
       </header>
 
-      <main>
-        <section id="inicio" className="mx-auto max-w-6xl px-5 pb-12 pt-20 md:px-8 md:pt-32">
-          <p className="reveal mb-6 inline-flex items-center gap-2 rounded-full border border-line px-4 py-1.5 text-sm text-muted">
-            <span className="h-2 w-2 rounded-full bg-accent" aria-hidden />
-            Aberto a estágio e vaga júnior
-          </p>
-          <h1 className="reveal font-display max-w-4xl text-5xl font-extrabold leading-[0.98] tracking-tight sm:text-6xl md:text-8xl">
-            Gilson Pereira, <span className="text-accent">da farmácia</span> para o código.
-          </h1>
-          <p className="reveal mt-8 max-w-2xl text-lg text-muted md:text-xl">
-            Farmacêutico em transição para tecnologia e graduando em Análise e Desenvolvimento de Sistemas. Construo
-            aplicações web com React, TypeScript e Node.js e também atuo em suporte técnico Windows.
-          </p>
-          <div className="reveal mt-10 flex flex-wrap gap-4">
-            <a
-              href="#projetos"
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-bold text-ink transition-transform hover:-translate-y-0.5"
-            >
-              Ver projetos <ArrowUpRight size={18} aria-hidden />
-            </a>
-            <a
-              href={GITHUB}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 font-medium transition-colors hover:border-accent hover:text-accent"
-            >
-              <Github size={18} aria-hidden /> GitHub
-            </a>
+      <main className="fade-in pb-24 pt-12 lg:w-full lg:py-20">
+        <Section id="sobre" title="Sobre">
+          <div className="max-w-[62ch] space-y-4">
+            <p>
+              Sou farmacêutico em transição para tecnologia e graduando em Análise e Desenvolvimento de Sistemas.
+              Desenvolvo aplicações web com React, TypeScript e NestJS e automações em Python e Node.js.
+            </p>
+            <p>
+              A experiência em saúde aparece nos projetos: prontuário e agenda clínica, consulta de medicamentos para
+              farmácia e sites para profissionais da área. Conheço o problema de quem usa o sistema, e isso orienta
+              as decisões de produto.
+            </p>
+            <p className="text-muted">
+              Uso ferramentas de IA como apoio de estudo e implementação. Antes de apresentar um projeto, valido o
+              comportamento, os testes e as limitações.
+            </p>
           </div>
-        </section>
+        </Section>
 
         <Section id="projetos" title="Projetos">
-          <div className="grid gap-4 lg:grid-cols-6">
-            {featured.map((p, i) => (
-              <ProjectCard key={p.slug} p={p} className={spans[i % spans.length]} />
-            ))}
-          </div>
-          {others.length > 0 && (
-            <>
-              <h3 className="reveal font-display mb-5 mt-14 text-xl font-bold text-muted">Mais projetos</h3>
-              <div className="grid gap-4 md:grid-cols-2">
-                {others.map((p) => (
-                  <ProjectCard key={p.slug} p={p} />
-                ))}
-              </div>
-            </>
-          )}
-        </Section>
-
-        <Section id="stack" title="Stack">
-          <div className="grid gap-4 md:grid-cols-2">
-            {stack.map((g) => (
-              <div key={g.group} className="reveal rounded-3xl border border-line p-6">
-                <h3 className="font-display mb-4 text-lg font-bold text-accent">{g.group}</h3>
-                <ul className="flex flex-wrap gap-2">
-                  {g.items.map((i) => (
-                    <li key={i} className="rounded-full bg-panel px-3 py-1.5 text-sm">
-                      {i}
-                    </li>
+          <div className="space-y-12">
+            {groups.map((g) => (
+              <div key={g.id}>
+                <h3 className="font-serif text-2xl font-semibold">{g.title}</h3>
+                <p className="mb-6 mt-1 text-sm text-muted">{g.intro}</p>
+                {projects
+                  .filter((p) => p.category === g.id)
+                  .map((p) => (
+                    <ProjectRow key={p.slug} p={p} />
                   ))}
-                </ul>
               </div>
             ))}
           </div>
-          <p className="reveal mt-6 text-muted">
-            Estudando agora: redes, Linux e cibersegurança (curso Cisco concluído) e Suporte de TI do Google (em
-            andamento).
+          <p className="mt-10 text-sm text-muted">
+            Alguns repositórios são privados e posso mostrá-los em conversa. Os demais projetos e estudos estão no{" "}
+            <a className="link" href={GITHUB} target="_blank" rel="noopener noreferrer">
+              meu GitHub
+            </a>
+            .
           </p>
         </Section>
 
-        <Section id="sobre" title="Como eu trabalho">
-          <ol className="grid gap-4 md:grid-cols-3">
-            {principles.map((p, i) => (
-              <li key={p.t} className="reveal rounded-3xl bg-panel p-6">
-                <span className="font-display text-4xl font-extrabold text-accent">0{i + 1}</span>
-                <h3 className="font-display mt-3 text-xl font-bold">{p.t}</h3>
-                <p className="mt-2 text-muted">{p.d}</p>
-              </li>
+        <Section id="competencias" title="Competências">
+          <dl className="max-w-[62ch] divide-y divide-rule border-y border-rule">
+            {skills.map(([k, v]) => (
+              <div key={k} className="grid gap-1 py-3 sm:grid-cols-[10rem_1fr] sm:gap-6">
+                <dt className="font-medium">{k}</dt>
+                <dd className="text-muted">{v}</dd>
+              </div>
             ))}
-          </ol>
+          </dl>
         </Section>
 
-        <Section id="contato" title="Vamos conversar">
-          <p className="reveal mb-8 max-w-xl text-lg text-muted">
-            Procuro estágio ou vaga júnior em front-end, suporte técnico ou desenvolvimento. O contato mais rápido é
-            pelo LinkedIn.
+        <Section id="formacao" title="Formação">
+          <dl className="max-w-[62ch] divide-y divide-rule border-y border-rule">
+            {education.map(([k, v]) => (
+              <div key={v} className="grid gap-1 py-3 sm:grid-cols-[10rem_1fr] sm:gap-6">
+                <dt className="font-mono text-xs uppercase tracking-[0.12em] text-muted sm:pt-1">{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </Section>
+
+        <Section id="contato" title="Contato">
+          <p className="max-w-[62ch]">
+            Estou procurando estágio ou vaga júnior em front-end, suporte técnico ou desenvolvimento. O contato mais
+            rápido é pelo{" "}
+            <a className="link" href={LINKEDIN} target="_blank" rel="noopener noreferrer">
+              LinkedIn
+            </a>
+            . Meu código está no{" "}
+            <a className="link" href={GITHUB} target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+            .
           </p>
-          <div className="reveal flex flex-wrap gap-4">
-            <a
-              href={LINKEDIN}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-bold text-ink transition-transform hover:-translate-y-0.5"
-            >
-              <Linkedin size={18} aria-hidden /> LinkedIn
-            </a>
-            <a
-              href={GITHUB}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 font-medium transition-colors hover:border-accent hover:text-accent"
-            >
-              <Github size={18} aria-hidden /> GitHub
-            </a>
-          </div>
         </Section>
-      </main>
 
-      <footer className="border-t border-line py-8 text-center text-sm text-muted">
-        © {new Date().getFullYear()} Gilson Pereira · Pernambuco, Brasil
-      </footer>
-    </>
+        <footer className="mt-10 border-t border-rule pt-6 font-mono text-xs text-muted">
+          Gilson Pereira · {new Date().getFullYear()}
+        </footer>
+      </main>
+    </div>
   );
 }

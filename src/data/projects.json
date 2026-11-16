@@ -1,130 +1,137 @@
 [
   {
     "slug": "usecognia",
+    "category": "web",
     "title": "UseCognia",
-    "summary": "SaaS para profissionais de saúde com agenda, prontuário e cobrança.",
-    "stack": [
-      "NestJS",
-      "React",
-      "PostgreSQL",
-      "TypeScript"
-    ],
+    "summary": "SaaS para psicólogos, fisioterapeutas e nutricionistas: agenda, prontuário eletrônico, financeiro e agendamento online. Inclui escalas e instrumentos clínicos com pontuação automática.",
+    "stack": ["NestJS", "React", "PostgreSQL", "TypeScript"],
     "repoUrl": null,
-    "demoUrl": "https://usecognia.vercel.app",
-    "featured": true
+    "demoUrl": "https://usecognia.com.br"
   },
   {
-    "slug": "farmaapp",
-    "title": "FarmaApp",
-    "summary": "PWA para farmacêuticos com consulta de medicamentos offline e busca com IA Gemini por função serverless.",
-    "stack": [
-      "React",
-      "Node.js"
-    ],
-    "repoUrl": "https://github.com/GilsonCataoDev/Pharma-helper",
-    "demoUrl": "https://pharma-plum-chi.vercel.app",
-    "featured": true
+    "slug": "inkhub",
+    "category": "web",
+    "title": "InkHub",
+    "summary": "ERP multi-tenant para estúdios de tatuagem que também operam cafeteria e loja de materiais. Monorepo com API e front-end, banco e cache em Docker.",
+    "stack": ["NestJS", "Next.js", "Prisma", "PostgreSQL", "Redis", "Docker"],
+    "repoUrl": null,
+    "demoUrl": null
+  },
+  {
+    "slug": "barbearia",
+    "category": "web",
+    "title": "App de barbearia",
+    "summary": "Aplicativo mobile e API para agendamento avulso e assinaturas mensais. O repositório traz a documentação técnica completa (arquitetura, banco, API REST, casos de uso e regras de negócio) junto do código.",
+    "stack": ["React Native", "Expo", "NestJS", "PostgreSQL"],
+    "repoUrl": null,
+    "demoUrl": null
   },
   {
     "slug": "kurio",
+    "category": "web",
     "title": "Kurio",
-    "summary": "Marketplace de NFTs com catálogo, carrinho, recursos em tempo real, MSW e testes E2E.",
-    "stack": [
-      "React 19",
-      "TypeScript",
-      "TanStack",
-      "Tailwind",
-      "Playwright"
-    ],
+    "summary": "Marketplace de NFTs feito para um desafio de front-end: catálogo, carrinho, favoritos e atualizações em tempo real. A API é simulada com MSW e o projeto tem testes E2E e documento de arquitetura.",
+    "stack": ["React 19", "TypeScript", "TanStack", "Tailwind", "MSW", "Playwright"],
     "repoUrl": "https://github.com/GilsonCataoDev/Task-jungle-gaming",
-    "demoUrl": "https://task-jungle-gaming.vercel.app",
-    "featured": true
+    "demoUrl": "https://task-jungle-gaming.vercel.app"
   },
   {
-    "slug": "winhelpdesk-toolkit",
-    "title": "WinHelpDesk Toolkit",
-    "summary": "Scripts para suporte N1/N2 no Windows, cobrindo rede, reparo, spooler, limpeza e diagnóstico.",
-    "stack": [
-      "Batch",
-      "PowerShell"
-    ],
-    "repoUrl": "https://github.com/GilsonCataoDev/WinHelpDesk-Toolkit",
-    "demoUrl": null,
-    "featured": true
+    "slug": "farmaapp",
+    "category": "web",
+    "title": "FarmaApp",
+    "summary": "PWA de consulta para o balcão da farmácia: catálogo local de medicamentos que funciona offline e busca assistida por IA (Gemini) via função serverless, que mantém a chave de API no servidor.",
+    "stack": ["React", "Node.js", "PWA", "IndexedDB"],
+    "repoUrl": "https://github.com/GilsonCataoDev/Pharma-helper",
+    "demoUrl": "https://pharma-plum-chi.vercel.app"
+  },
+  {
+    "slug": "photoselect",
+    "category": "web",
+    "title": "PhotoSelect",
+    "summary": "Sistema para fotógrafas criarem sessões, enviarem fotos e gerarem um link para o cliente escolher em uma galeria responsiva, com limite de seleção e confirmação final.",
+    "stack": ["Next.js", "TypeScript", "Tailwind", "Supabase", "JWT"],
+    "repoUrl": "https://github.com/GilsonCataoDev/photo-selector",
+    "demoUrl": null
+  },
+  {
+    "slug": "job-search-daily",
+    "category": "automation",
+    "title": "job-search-daily",
+    "summary": "Rotina diária no GitHub Actions que busca vagas (RemoteOK, We Work Remotely e busca pública do LinkedIn), pontua cada uma de A a F com a API da Anthropic contra o meu perfil e registra tudo em CSV e relatórios versionados no git.",
+    "stack": ["Python", "GitHub Actions", "Anthropic API"],
+    "repoUrl": null,
+    "demoUrl": null
   },
   {
     "slug": "jobhunter-br",
+    "category": "automation",
     "title": "jobhunter-br",
-    "summary": "Robô de busca de vagas na Gupy e no InfoJobs com aprovação por Telegram antes da candidatura.",
-    "stack": [
-      "Python"
-    ],
+    "summary": "Coleta vagas de entrada no Brasil (Gupy, InfoJobs, vaga-ja), filtra pelo perfil e pede aprovação por Telegram antes de qualquer candidatura. Roda localmente e tem modo de teste.",
+    "stack": ["Python", "Telegram", "Automação de navegador"],
     "repoUrl": "https://github.com/GilsonCataoDev/jobhunter-br",
-    "demoUrl": null,
-    "featured": true
+    "demoUrl": null
   },
   {
-    "slug": "bot-download-video",
-    "title": "bot-download-video",
-    "summary": "Automatiza uma extensão de download de vídeo em playlists e páginas de curso, com CI.",
-    "stack": [
-      "Node.js",
-      "Playwright"
-    ],
-    "repoUrl": "https://github.com/GilsonCataoDev/bot-download-video",
-    "demoUrl": null,
-    "featured": true
+    "slug": "openclip",
+    "category": "automation",
+    "title": "OpenClip AI",
+    "summary": "Pipeline local que transforma podcasts, entrevistas e aulas em vídeos verticais: transcrição com timestamps, seleção de cortes por LLM local, reenquadramento 9:16 com rastreio de rosto e legendas estilizadas. Não usa APIs pagas.",
+    "stack": ["Python", "FFmpeg", "Faster-Whisper", "Ollama", "MediaPipe", "Gradio"],
+    "repoUrl": null,
+    "demoUrl": null
   },
   {
-    "slug": "clinvag",
-    "title": "Clinvag",
-    "summary": "Landing page de uma clínica de vacinação.",
-    "stack": [
-      "React",
-      "Vite",
-      "CSS Modules"
-    ],
-    "repoUrl": "https://github.com/GilsonCataoDev/Clinvag",
-    "demoUrl": "https://clinvag.netlify.app",
-    "featured": false
+    "slug": "leads-automation",
+    "category": "automation",
+    "title": "Pesquisa de leads públicos",
+    "summary": "Automação local que lista perfis profissionais públicos (Meta Graph API e OpenStreetMap), pontua, remove duplicados e gera CSV. Não envia mensagens nem interage com contas. Agendável pelo Agendador de Tarefas do Windows.",
+    "stack": ["Node.js", "Meta Graph API", "OpenStreetMap"],
+    "repoUrl": null,
+    "demoUrl": null
   },
   {
-    "slug": "kanban-de-suporte",
-    "title": "Kanban de Suporte",
-    "summary": "Quadro de tickets organizado por etapa.",
-    "stack": [
-      "React",
-      "TypeScript",
-      "Vite"
-    ],
-    "repoUrl": "https://github.com/GilsonCataoDev/kaban-suporte",
-    "demoUrl": null,
-    "featured": false
+    "slug": "rag-gemini",
+    "category": "automation",
+    "title": "RAG sobre documentos PDF",
+    "summary": "Pipeline de perguntas e respostas sobre PDFs: extração de texto, indexação vetorial e respostas ancoradas no conteúdo do documento para reduzir alucinação.",
+    "stack": ["Python", "LangChain", "ChromaDB", "Gemini"],
+    "repoUrl": "https://github.com/GilsonCataoDev/rag-documentos-gemini",
+    "demoUrl": null
   },
   {
-    "slug": "agenda-medica",
-    "title": "Agenda Médica",
-    "summary": "Agenda diária para clínica com filtros.",
-    "stack": [
-      "React",
-      "TypeScript",
-      "Vite"
-    ],
-    "repoUrl": "https://github.com/GilsonCataoDev/agenda-medica",
-    "demoUrl": null,
-    "featured": false
+    "slug": "emporio-agent",
+    "category": "automation",
+    "title": "Agente de atendimento Empório da Música",
+    "summary": "Agente de atendimento de uma loja fictícia, feito para um desafio técnico de engenheiro de IA. Consulta preços, estoque e pedidos por ferramentas, aplica a política de devolução com datas reais e recusa o que foge do escopo.",
+    "stack": ["Python", "LLM com ferramentas", "Testes e avaliação"],
+    "repoUrl": "https://github.com/GilsonCataoDev/emporio-da-musica-agent",
+    "demoUrl": null
   },
   {
-    "slug": "financeiro-saas",
-    "title": "Financeiro SaaS",
-    "summary": "Dashboard de receita, faturas e MRR.",
-    "stack": [
-      "React",
-      "TypeScript",
-      "Vite"
-    ],
-    "repoUrl": "https://github.com/GilsonCataoDev/financeiro-saas",
-    "demoUrl": null,
-    "featured": false
+    "slug": "ml-afiliados",
+    "category": "automation",
+    "title": "ML Afiliados",
+    "summary": "Scraping de produtos do Mercado Livre, geração de links de afiliado, atualização de preços duas vezes ao dia por cron e geração de roteiros de conteúdo com IA.",
+    "stack": ["Node.js", "Cron", "Claude API"],
+    "repoUrl": "https://github.com/GilsonCataoDev/botmp",
+    "demoUrl": null
+  },
+  {
+    "slug": "market-lab",
+    "category": "automation",
+    "title": "Market Intelligence Lab",
+    "summary": "Laboratório local de pesquisa quantitativa para BTC/USDT e XAU/USD: validação de qualidade de candles, indicadores, regimes e backtests com custos explícitos. Projeto educacional, com execução real bloqueada.",
+    "stack": ["Python", "NestJS", "React", "PostgreSQL"],
+    "repoUrl": "https://github.com/GilsonCataoDev/Binary-intelligence",
+    "demoUrl": null
+  },
+  {
+    "slug": "winhelpdesk",
+    "category": "support",
+    "title": "WinHelpDesk Toolkit",
+    "summary": "Conjunto de scripts para suporte N1/N2 no Windows: diagnóstico e reparo de rede, fila de impressão (spooler), limpeza e diagnóstico.",
+    "stack": ["Batch", "PowerShell"],
+    "repoUrl": "https://github.com/GilsonCataoDev/WinHelpDesk-Toolkit",
+    "demoUrl": null
   }
 ]
